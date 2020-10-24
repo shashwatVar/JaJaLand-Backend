@@ -10,7 +10,7 @@
 
 ### Reporting Bugs
 
-This section guides you through submitting a bug report. 
+This section guides you through submitting a bug report.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -19,7 +19,7 @@ This section guides you through submitting a bug report.
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
 * **Use a clear and descriptive title** for the issue to identify the problem.
-* **Describe the exact steps which reproduce the problem** in as many details as possible. 
+* **Describe the exact steps which reproduce the problem** in as many details as possible.
 * **Describe the behavior you observed after following the steps** and point out what exactly is the problem with that behavior.
 * **Explain which behavior you expected to see instead and why.**
 
