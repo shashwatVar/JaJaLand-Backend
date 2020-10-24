@@ -1,5 +1,5 @@
 # JaJa-Land
-[![Generic badge](https://img.shields.io/badge/Stage-Ideation-<COLOR>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Stage-development-<COLOR>.svg)](https://shields.io/)
 
 ## About
 
