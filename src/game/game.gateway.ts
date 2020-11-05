@@ -39,7 +39,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.wss.in(data.RoomId).emit("num_players", this.wss.sockets.adapter.rooms[data.RoomId].length);
     this.ActiveRooms.forEach(room => {
       if (room.RoomId == data.RoomId){
-        this.wss.in(data.RoomId).emit('MyRoom', room.players);
+        this.wss.in(data.RoomId).emit('MyRoom', room);
       }
     });
     this.logger.log(this.ActiveRooms);
@@ -60,7 +60,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
       this.ActiveRooms.forEach(room => {
         if (room.RoomId == data.RoomId){
           room.players.push({ socket: client.id, name: data.PlayerName });
-          this.wss.in(data.RoomId).emit('MyRoom', room.players);
+          this.wss.in(data.RoomId).emit('MyRoom', room);
         }
       });
     } else {
@@ -69,6 +69,26 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.logger.log(this.ActiveRooms);
     const keyArray = this.ActiveRooms.map((item) => { return item["RoomId"]; });
     this.wss.emit('ActiveRooms', keyArray);
+  }
+
+  @SubscribeMessage('setActive')
+  handlesetActive(client: Socket, data: { room : {socket: string, name: string}[], points : number[] , RoomId: string }) {
+    this.wss.in(data.RoomId).emit("ActiveUser", {activeUser: data.room[data.points.length]["socket"]});
+  }
+
+  @SubscribeMessage('handleJoke')
+  handleJoke(client: Socket, data: { joke : string, RoomId: string }) {
+    client.to(data.RoomId).emit("sentJoke", {joke : data.joke});
+  }
+
+  @SubscribeMessage('UpdateRating')
+  UpdateRating(client: Socket, data: {points : number[] , RoomId: string }) {
+    if (data.points.length < 5){
+      this.wss.in(data.RoomId).emit("UpdatedRating", {points : data.points});
+    } else {
+      // do do the changes to move to next round
+    }
+    
   }
 
   /* @SubscribeMessage('leaveRoom')
@@ -114,7 +134,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
       }
       if (remove >= 0){
         ele.players.splice(remove, 1);
-        this.wss.in(ele.RoomId).emit('MyRoom', ele.players);
+        this.wss.in(ele.RoomId).emit('MyRoom', ele);
       } 
     });
     this.logger.log(this.ActiveRooms);
